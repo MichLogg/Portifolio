@@ -1,414 +1,405 @@
+/* ==========================================================================
+   Portfólio - Paulo Michel
+   ========================================================================== */
+
+const preferenciaReduzida = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+);
+
+/* ==========================================================================
+   Ano atual no rodapé
+   ========================================================================== */
+
+const anoAtual = new Date().getFullYear();
+
+document.querySelectorAll("[data-ano]").forEach((elemento) => {
+  elemento.textContent = anoAtual;
+});
+
+/* ==========================================================================
+   Efeito de digitação do título
+   O texto completo continua no HTML (para leitores de tela e buscadores)
+   e a animação acontece em uma cópia decorativa.
+   ========================================================================== */
+
 const titulo = document.querySelector(".homeinfo h1");
 
 if (titulo) {
-    const texto = titulo.textContent.trim();
-    titulo.textContent = "";
+  const texto = titulo.textContent.trim();
 
+  const textoAcessivel = document.createElement("span");
+  textoAcessivel.className = "sr-only";
+  textoAcessivel.textContent = texto;
+
+  const textoVisivel = document.createElement("span");
+  textoVisivel.setAttribute("aria-hidden", "true");
+
+  // reserva a altura real do título antes de esvaziá-lo, senão o bloco
+  // colapsa e o resto da página salta quando a digitação começa
+  const alturaReservada = titulo.getBoundingClientRect().height;
+
+  titulo.style.minHeight = `${alturaReservada}px`;
+  titulo.textContent = "";
+  titulo.append(textoAcessivel, textoVisivel);
+
+  if (preferenciaReduzida.matches) {
+    textoVisivel.textContent = texto;
+    titulo.style.minHeight = "";
+  } else {
     let indice = 0;
 
-    function escreverTitulo() {
-        if (indice < texto.length) {
-            titulo.textContent += texto[indice];
-            indice++;
+    const escreverTitulo = () => {
+      if (indice < texto.length) {
+        textoVisivel.textContent += texto[indice];
+        indice++;
 
-            setTimeout(escreverTitulo, 60);
-        }
-    }
+        setTimeout(escreverTitulo, 60);
+        return;
+      }
+
+      // terminou: devolve o controle da altura ao CSS
+      titulo.style.minHeight = "";
+    };
 
     escreverTitulo();
+  }
 }
 
+/* ==========================================================================
+   Animação de entrada das seções
+   ========================================================================== */
 
-const elementosAnimados =
-    document.querySelectorAll(
-        ".homeinfo, .home-image, .section-title, .skills-header, .skills-interface, .project-card, .sobre-content, .contato-links"
-    );
+const elementosAnimados = document.querySelectorAll(
+  ".homeinfo, .home-image, .section-title, .skills-header, .skills-interface, .project-card, .sobre-content, .contato-links",
+);
 
-const observador =
-    new IntersectionObserver(
-        (elementos) => {
-            elementos.forEach((elemento) => {
-                if (elemento.isIntersecting) {
-                    elemento.target.classList.add("mostrar");
-                }
-            });
-        },
-        {
-            threshold: 0.15
-        }
-    );
+const observador = new IntersectionObserver(
+  (elementos, instancia) => {
+    elementos.forEach((elemento) => {
+      if (elemento.isIntersecting) {
+        elemento.target.classList.add("mostrar");
+
+        // a animação é de mão única: depois de exibir, para de observar
+        instancia.unobserve(elemento.target);
+      }
+    });
+  },
+  {
+    threshold: 0.15,
+  },
+);
 
 elementosAnimados.forEach((elemento) => {
-    elemento.classList.add("animar");
-    observador.observe(elemento);
+  elemento.classList.add("animar");
+  observador.observe(elemento);
 });
 
+/* ==========================================================================
+   Destaque do item de menu da seção visível
+   ========================================================================== */
 
+const cabecalho = document.querySelector("header");
 const secoes = document.querySelectorAll("section");
 const linksMenu = document.querySelectorAll("nav a");
 
+let atualizacaoAgendada = false;
+
 function atualizarMenu() {
-    let secaoAtual = "";
+  atualizacaoAgendada = false;
 
-    secoes.forEach((secao) => {
-        const distancia = secao.offsetTop - 180;
+  // o header muda de altura no mobile, então o recuo é medido, não fixo
+  const recuo = (cabecalho ? cabecalho.offsetHeight : 77) + 110;
 
-        if (window.scrollY >= distancia) {
-            secaoAtual = secao.id;
-        }
-    });
+  let secaoAtual = "";
 
-    linksMenu.forEach((link) => {
-        link.classList.remove("ativo");
+  secoes.forEach((secao) => {
+    if (window.scrollY >= secao.offsetTop - recuo) {
+      secaoAtual = secao.id;
+    }
+  });
 
-        if (
-            link.getAttribute("href") ===
-            `#${secaoAtual}`
-        ) {
-            link.classList.add("ativo");
-        }
-    });
+  // no fim da página a última seção pode nunca alcançar o recuo (ela é mais
+  // curta que o espaço restante), então o fim do scroll a marca como atual
+  const fimDoScroll =
+    document.documentElement.scrollHeight - window.innerHeight - 2;
+
+  if (secoes.length && window.scrollY >= fimDoScroll) {
+    secaoAtual = secoes[secoes.length - 1].id;
+  }
+
+  linksMenu.forEach((link) => {
+    const ativo = link.getAttribute("href") === `#${secaoAtual}`;
+
+    link.classList.toggle("ativo", ativo);
+
+    if (ativo) {
+      link.setAttribute("aria-current", "true");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
 }
 
-window.addEventListener(
-    "scroll",
-    atualizarMenu
-);
+function agendarAtualizacaoDoMenu() {
+  if (!atualizacaoAgendada) {
+    atualizacaoAgendada = true;
+    requestAnimationFrame(atualizarMenu);
+  }
+}
+
+window.addEventListener("scroll", agendarAtualizacaoDoMenu, { passive: true });
+window.addEventListener("resize", agendarAtualizacaoDoMenu);
 
 atualizarMenu();
 
+/* ==========================================================================
+   Fundo de estrelas
+   ========================================================================== */
 
 const estrelas = document.querySelector("#stars");
 
-if (estrelas) {
-    for (let i = 0; i < 120; i++) {
-        const estrela = document.createElement("span");
+if (estrelas && !preferenciaReduzida.matches) {
+  const fragmento = document.createDocumentFragment();
 
-        estrela.classList.add("star");
+  for (let i = 0; i < 120; i++) {
+    const estrela = document.createElement("span");
+    const tamanho = Math.random() * 2 + 1;
 
-        estrela.style.left =
-            `${Math.random() * 100}%`;
+    estrela.classList.add("star");
+    estrela.style.left = `${Math.random() * 100}%`;
+    estrela.style.top = `${Math.random() * 100}%`;
+    estrela.style.width = `${tamanho}px`;
+    estrela.style.height = `${tamanho}px`;
+    estrela.style.animationDelay = `${Math.random() * 5}s`;
 
-        estrela.style.top =
-            `${Math.random() * 100}%`;
+    fragmento.appendChild(estrela);
+  }
 
-        const tamanho =
-            Math.random() * 2 + 1;
+  estrelas.appendChild(fragmento);
 
-        estrela.style.width =
-            `${tamanho}px`;
-
-        estrela.style.height =
-            `${tamanho}px`;
-
-        estrela.style.animationDelay =
-            `${Math.random() * 5}s`;
-
-        estrelas.appendChild(estrela);
+  const criarEstrelaCadente = () => {
+    // não desenha nada enquanto a aba está em segundo plano
+    if (document.hidden) {
+      return;
     }
 
-    function criarEstrelaCadente() {
-        const estrela =
-            document.createElement("span");
+    const estrela = document.createElement("span");
+    const duracao = Math.random() * 2 + 3;
 
-        estrela.classList.add(
-            "shooting-star"
-        );
+    estrela.classList.add("shooting-star");
+    estrela.style.left = `${Math.random() * 120 - 20}%`;
+    estrela.style.top = `${Math.random() * 40}%`;
+    estrela.style.animationDuration = `${duracao}s`;
 
-        estrela.style.left =
-            `${Math.random() * 100 + 20}%`;
+    estrelas.appendChild(estrela);
 
-        estrela.style.top =
-            `${Math.random() * 40}%`;
+    // a remoção acompanha a duração sorteada; o valor fixo de antes cortava
+    // as animações mais longas e deixava as curtas reiniciarem
+    setTimeout(() => {
+      estrela.remove();
+    }, duracao * 1000);
+  };
 
-        estrela.style.animationDuration =
-            `${Math.random() * 2 + 3}s`;
-
-        estrelas.appendChild(estrela);
-
-        setTimeout(() => {
-            estrela.remove();
-        }, 5000);
-    }
-
-    setInterval(
-        criarEstrelaCadente,
-        2500
-    );
+  setInterval(criarEstrelaCadente, 2500);
 }
 
+/* ==========================================================================
+   Painel de habilidades
+   ========================================================================== */
 
 const skillData = {
-    html: {
-        number: "01",
-        icon: "</>",
-        category: "FRONT END",
-        title: "HTML",
-        description:
-            "Estrutura e organização de páginas web utilizando HTML5 e boas práticas de semântica.",
-        keywords: [
-            "HTML5",
-            "SEMÂNTICA",
-            "ESTRUTURA"
-        ]
-    },
+  html: {
+    number: "01",
+    icon: "</>",
+    category: "FRONT END",
+    title: "HTML",
+    description:
+      "Estrutura e organização de páginas web utilizando HTML5 e boas práticas de semântica.",
+    keywords: ["HTML5", "SEMÂNTICA", "ESTRUTURA"],
+  },
 
-    css: {
-        number: "02",
-        icon: "#",
-        category: "FRONT END",
-        title: "CSS",
-        description:
-            "Criação de interfaces, layouts responsivos, estilização, animações e organização visual das páginas.",
-        keywords: [
-            "CSS3",
-            "RESPONSIVO",
-            "LAYOUT"
-        ]
-    },
+  css: {
+    number: "02",
+    icon: "#",
+    category: "FRONT END",
+    title: "CSS",
+    description:
+      "Criação de interfaces, layouts responsivos, estilização, animações e organização visual das páginas.",
+    keywords: ["CSS3", "RESPONSIVO", "LAYOUT"],
+  },
 
-    javascript: {
-        number: "03",
-        icon: "JS",
-        category: "PROGRAMAÇÃO",
-        title: "JavaScript",
-        description:
-            "Utilização de JavaScript para criar interações, comportamentos e funcionalidades dinâmicas nas páginas.",
-        keywords: [
-            "JAVASCRIPT",
-            "DOM",
-            "INTERAÇÃO"
-        ]
-    },
+  javascript: {
+    number: "03",
+    icon: "JS",
+    category: "PROGRAMAÇÃO",
+    title: "JavaScript",
+    description:
+      "Utilização de JavaScript para criar interações, comportamentos e funcionalidades dinâmicas nas páginas.",
+    keywords: ["JAVASCRIPT", "DOM", "INTERAÇÃO"],
+  },
 
-    git: {
-        number: "04",
-        icon: "GH",
-        category: "VERSIONAMENTO",
-        title: "Git / GitHub",
-        description:
-            "Controle de versões e organização dos projetos através de Git e repositórios no GitHub.",
-        keywords: [
-            "GIT",
-            "GITHUB",
-            "VERSIONAMENTO"
-        ]
-    }
+  git: {
+    number: "04",
+    icon: "GH",
+    category: "VERSIONAMENTO",
+    title: "Git / GitHub",
+    description:
+      "Controle de versões e organização dos projetos através de Git e repositórios no GitHub.",
+    keywords: ["GIT", "GITHUB", "VERSIONAMENTO"],
+  },
 };
 
+const skillOptions = [...document.querySelectorAll(".skill-option")];
+const displayContent = document.querySelector(".display-content");
+const skillIcon = document.querySelector("#skillIcon");
+const skillCategory = document.querySelector("#skillCategory");
+const skillTitle = document.querySelector("#skillTitle");
+const skillDescription = document.querySelector("#skillDescription");
+const skillNumber = document.querySelector("#skillNumber");
+const skillKeywords = document.querySelector("#skillKeywords");
 
-const skillOptions =
-    document.querySelectorAll(
-        ".skill-option"
-    );
+// precisa acompanhar a duração de .display-content em style.css
+const DURACAO_TROCA = 250;
 
-const skillDisplay =
-    document.querySelector(
-        ".skill-display"
-    );
+let trocaAgendada = null;
 
-const displayContent =
-    document.querySelector(
-        ".display-content"
-    );
+function preencherPainel(dados) {
+  skillIcon.textContent = dados.icon;
+  skillCategory.textContent = dados.category;
+  skillTitle.textContent = dados.title;
+  skillDescription.textContent = dados.description;
+  skillNumber.textContent = dados.number;
 
-const skillIcon =
-    document.querySelector(
-        "#skillIcon"
-    );
+  skillKeywords.innerHTML = "";
 
-const skillCategory =
-    document.querySelector(
-        "#skillCategory"
-    );
+  dados.keywords.forEach((keyword) => {
+    const tag = document.createElement("span");
+    tag.textContent = keyword;
+    skillKeywords.appendChild(tag);
+  });
+}
 
-const skillTitle =
-    document.querySelector(
-        "#skillTitle"
-    );
+function selecionarSkill(option) {
+  const dados = skillData[option.dataset.skill];
 
-const skillDescription =
-    document.querySelector(
-        "#skillDescription"
-    );
+  if (!dados || option.classList.contains("active")) {
+    return;
+  }
 
-const skillNumber =
-    document.querySelector(
-        "#skillNumber"
-    );
+  const indiceAtual = skillOptions.findIndex((item) =>
+    item.classList.contains("active"),
+  );
+  const novoIndice = skillOptions.indexOf(option);
+  const direcao = novoIndice > indiceAtual ? 1 : -1;
 
-const skillKeywords =
-    document.querySelector(
-        "#skillKeywords"
-    );
+  skillOptions.forEach((item) => {
+    const ativo = item === option;
 
+    item.classList.toggle("active", ativo);
+    item.setAttribute("aria-pressed", String(ativo));
+  });
 
-skillOptions.forEach((option) => {
+  if (preferenciaReduzida.matches) {
+    preencherPainel(dados);
+    return;
+  }
 
-    option.addEventListener(
-        "click",
-        () => {
+  // a transição mora no CSS (.display-content.saindo); daqui só definimos
+  // o sentido do deslize e alternamos a classe.
+  //
+  // O agendamento é por timer, e não por "transitionend": em aba oculta ou
+  // sem layout a transição não roda, o evento nunca chega e o painel ficaria
+  // preso no conteúdo antigo.
+  clearTimeout(trocaAgendada);
 
-            const skill =
-                option.dataset.skill;
+  displayContent.style.setProperty("--deslocamento", `${direcao * 40}px`);
+  displayContent.classList.add("saindo");
 
-            const dados =
-                skillData[skill];
+  trocaAgendada = setTimeout(() => {
+    preencherPainel(dados);
 
-            if (!dados) {
-                return;
-            }
+    // reposiciona no lado oposto SEM animar (a transição é desligada e o
+    // reflow forçado aplica a nova posição de imediato); só depois disso
+    // o painel volta deslizando para o centro.
+    displayContent.style.transition = "none";
+    displayContent.style.setProperty("--deslocamento", `${direcao * -40}px`);
+    void displayContent.offsetWidth;
+    displayContent.style.transition = "";
 
-            if (
-                option.classList.contains(
-                    "active"
-                )
-            ) {
-                return;
-            }
+    displayContent.classList.remove("saindo");
+  }, DURACAO_TROCA);
+}
 
-            const indiceAtual =
-                [...skillOptions].indexOf(
-                    document.querySelector(
-                        ".skill-option.active"
-                    )
-                );
+skillOptions.forEach((option, indice) => {
+  option.addEventListener("click", () => {
+    selecionarSkill(option);
+  });
 
-            const novoIndice =
-                [...skillOptions].indexOf(
-                    option
-                );
+  // navegação por teclado entre as opções
+  option.addEventListener("keydown", (evento) => {
+    let alvo = null;
 
-            const direcao =
-                novoIndice > indiceAtual
-                    ? 1
-                    : -1;
+    if (evento.key === "ArrowDown" || evento.key === "ArrowRight") {
+      alvo = skillOptions[(indice + 1) % skillOptions.length];
+    } else if (evento.key === "ArrowUp" || evento.key === "ArrowLeft") {
+      alvo =
+        skillOptions[(indice - 1 + skillOptions.length) % skillOptions.length];
+    }
 
-            skillOptions.forEach(
-                (item) => {
-                    item.classList.remove(
-                        "active"
-                    );
-                }
-            );
-
-            option.classList.add(
-                "active"
-            );
-
-            displayContent.style.transform =
-                `translateX(${direcao * 40}px)`;
-
-            displayContent.style.opacity =
-                "0";
-
-
-            setTimeout(() => {
-
-                skillIcon.textContent =
-                    dados.icon;
-
-                skillCategory.textContent =
-                    dados.category;
-
-                skillTitle.textContent =
-                    dados.title;
-
-                skillDescription.textContent =
-                    dados.description;
-
-                skillNumber.textContent =
-                    dados.number;
-
-                skillKeywords.innerHTML =
-                    "";
-
-                dados.keywords.forEach(
-                    (keyword) => {
-
-                        const tag =
-                            document.createElement(
-                                "span"
-                            );
-
-                        tag.textContent =
-                            keyword;
-
-                        skillKeywords.appendChild(
-                            tag
-                        );
-                    }
-                );
-
-                displayContent.style.transform =
-                    `translateX(${direcao * -40}px)`;
-
-                requestAnimationFrame(() => {
-
-                    displayContent.style.opacity =
-                        "1";
-
-                    displayContent.style.transform =
-                        "translateX(0)";
-
-                });
-
-            }, 250);
-
-        }
-    );
-
+    if (alvo) {
+      evento.preventDefault();
+      alvo.focus();
+      selecionarSkill(alvo);
+    }
+  });
 });
 
+/* ==========================================================================
+   Inclinação 3D dos cards de projeto
+   ========================================================================== */
 
-const cards =
-    document.querySelectorAll(
-        ".project-card:not(.project-loading)"
-    );
+const suportaHover = window.matchMedia("(hover: hover) and (pointer: fine)");
 
-cards.forEach((card) => {
+if (suportaHover.matches && !preferenciaReduzida.matches) {
+  const cards = document.querySelectorAll(
+    ".project-card:not(.project-loading)",
+  );
 
-    card.addEventListener(
-        "mousemove",
-        (evento) => {
+  cards.forEach((card) => {
+    let quadroAgendado = false;
 
-            const rect =
-                card.getBoundingClientRect();
+    card.addEventListener("mouseenter", () => {
+      // sem transition durante o movimento, senão o card persegue o cursor
+      card.classList.add("inclinando");
+    });
 
-            const x =
-                evento.clientX -
-                rect.left;
+    card.addEventListener("mousemove", (evento) => {
+      if (quadroAgendado) {
+        return;
+      }
 
-            const y =
-                evento.clientY -
-                rect.top;
+      quadroAgendado = true;
 
-            const centroX =
-                rect.width / 2;
+      const { clientX, clientY } = evento;
 
-            const centroY =
-                rect.height / 2;
+      requestAnimationFrame(() => {
+        quadroAgendado = false;
 
-            const rotacaoX =
-                (y - centroY) / 25;
+        const rect = card.getBoundingClientRect();
 
-            const rotacaoY =
-                (centroX - x) / 25;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
 
-            card.style.transform = `
-                perspective(800px)
-                rotateX(${rotacaoX}deg)
-                rotateY(${rotacaoY}deg)
-                translateY(-8px)
-            `;
-        }
-    );
+        const rotacaoX = (y - rect.height / 2) / 25;
+        const rotacaoY = (rect.width / 2 - x) / 25;
 
-    card.addEventListener(
-        "mouseleave",
-        () => {
-            card.style.transform = "";
-        }
-    );
+        card.style.transform = `perspective(800px) rotateX(${rotacaoX}deg) rotateY(${rotacaoY}deg) translateY(-8px)`;
+      });
+    });
 
-});
+    card.addEventListener("mouseleave", () => {
+      card.classList.remove("inclinando");
+      card.style.transform = "";
+    });
+  });
+}

@@ -1,278 +1,394 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfólio | Paulo Michel</title>
 
-    <link rel="stylesheet" href="style.css">
+    <meta
+      name="description"
+      content="Portfólio de Paulo Michel, desenvolvedor Full Stack Web. Projetos em HTML, CSS e JavaScript, habilidades e formas de contato."
+    />
+    <meta name="author" content="Paulo Michel" />
+    <meta name="theme-color" content="#080B14" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Redes sociais. Preencha og:url e og:image com a URL absoluta
+         do site publicado para o preview funcionar ao compartilhar. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Portfólio | Paulo Michel" />
+    <meta
+      property="og:description"
+      content="Desenvolvedor Full Stack Web. Projetos em HTML, CSS e JavaScript."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="img/pauloMichel.jpeg" />
+    <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a href="#home" class="sr-only">Pular para o conteúdo</a>
 
-    <div id="stars"></div>
+    <div id="stars" aria-hidden="true"></div>
 
     <header>
-        <div class="logo">
-            <a href="#home">
-                <span>Michlogg</span>
-            </a>
-        </div>
+      <div class="logo">
+        <a href="#home">
+          <span>Michlogg</span>
+        </a>
+      </div>
 
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#projetos">Projetos</a></li>
-                <li><a href="#habilidade">Habilidades</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#contato">Contato</a></li>
-            </ul>
-        </nav>
+      <nav aria-label="Navegação principal">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#projetos">Projetos</a></li>
+          <li><a href="#habilidade">Habilidades</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
     </header>
 
     <main>
+      <section id="home" class="home">
+        <div class="homeinfo">
+          <span class="home-tag">DESENVOLVEDOR FULL STACK WEB</span>
 
-        <section id="home" class="home">
-            <div class="homeinfo">
-                <span class="home-tag">DESENVOLVEDOR FULL STACK WEB</span>
+          <h1>Me chamo Paulo Michel</h1>
+          <p>
+            Bem-vindo ao meu portfólio. Aqui você encontrará alguns dos
+            principais projetos que desenvolvi durante minha jornada na
+            programação.
+          </p>
 
-                <h1>Me chamo Paulo Michel</h1>
-                <p>
-                    Bem-vindo ao meu portfólio. Aqui você encontrará
-                    alguns dos principais projetos que desenvolvi
-                    durante minha jornada na programação.
-                </p>
+          <div class="contatoprojetos">
+            <a href="#projetos" class="btn-projetos">Ver Projetos</a>
+            <a href="#contato" class="btn-contato">Entrar em contato</a>
+            <a
+              href="https://github.com/MichLogg"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-github"
+              >GitHub</a
+            >
+          </div>
+        </div>
 
-                <div class="contatoprojetos">
-                    <a href="#projetos" class="btn-projetos">Ver Projetos</a>
-                    <a href="#contato" class="btn-contato">Entrar em contato</a>
-                    <a href="https://github.com/MichLogg" target="_blank" class="btn-github">GitHub</a>
-                </div>
+        <div class="home-image">
+          <div class="image-glow"></div>
+          <img
+            src="img/pauloMichel.jpeg"
+            alt="Foto de Paulo Michel"
+            width="280"
+            height="340"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </section>
+
+      <section id="projetos" class="projetos">
+        <div class="section-title">
+          <span>MEU TRABALHO</span>
+          <h2>Projetos</h2>
+          <p>
+            Alguns projetos desenvolvidos durante minha jornada de aprendizado.
+          </p>
+        </div>
+
+        <div class="cards-projetos">
+          <article class="project-card">
+            <div class="project-image">
+              <img
+                src="img/Screenshot_2.jpg"
+                alt="Tela inicial do catálogo de motos Moto Max"
+                width="1513"
+                height="792"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
 
-            <div class="home-image">
-                <div class="image-glow"></div>
-                <img src="img/pauloMichel.jpeg" alt="Foto de Paulo Michel">
+            <div class="project-content">
+              <span class="project-number">PROJETO 01</span>
+              <h3>MOTO MAX</h3>
+              <p>
+                Projeto de catálogo de motos desenvolvido para aprimorar meus
+                conhecimentos em desenvolvimento Front End e Design.
+              </p>
+
+              <ul class="tecnologias">
+                <li>HTML</li>
+                <li>CSS</li>
+              </ul>
+
+              <div class="projeto-links">
+                <a
+                  href="https://michlogg.github.io/motomax/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-visualizar"
+                >
+                  Visualizar Projeto
+                </a>
+                <a
+                  href="https://github.com/MichLogg/projetohtmlfinal"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-diretorio"
+                >
+                  Diretório
+                </a>
+              </div>
             </div>
-        </section>
+          </article>
 
-        <section id="projetos" class="projetos">
-
-            <div class="section-title">
-                <span>MEU TRABALHO</span>
-                <h2>Projetos</h2>
-                <p>Alguns projetos desenvolvidos durante minha jornada de aprendizado.</p>
-            </div>
-
-            <div class="cards-projetos">
-
-                <article class="project-card">
-                    <div class="project-image">
-                        <img src="img/Screenshot_2.jpg" alt="Projeto Moto Max">
-                    </div>
-
-                    <div class="project-content">
-                        <span class="project-number">PROJETO 01</span>
-                        <h3>MOTO MAX</h3>
-                        <p>
-                            Projeto de catálogo de motos desenvolvido
-                            para aprimorar meus conhecimentos em
-                            desenvolvimento Front End e Design.
-                        </p>
-
-                        <ul class="tecnologias">
-                            <li>HTML</li>
-                            <li>CSS</li>
-                        </ul>
-
-                        <div class="projeto-links">
-                            <a href="https://michlogg.github.io/motomax/" target="_blank" class="btn-visualizar">
-                                Visualizar Projeto
-                            </a>
-                            <a href="https://github.com/MichLogg/projetohtmlfinal" target="_blank" class="btn-diretorio">
-                                Diretório
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="project-card project-loading">
-                    <div class="loading-content">
-                        <span class="loading-icon">⚙</span>
-                        <span class="project-number">PROJETO 02</span>
-                        <h3>EM DESENVOLVIMENTO</h3>
-                        <p>Novo projeto sendo desenvolvido.</p>
-
-                        <div class="loading-bar">
-                            <span class="progress-89"></span>
-                        </div>
-
-                        <span class="loading-text">LOADING 89%</span>
-                    </div>
-                </article>
-
-                <article class="project-card project-loading">
-                    <div class="loading-content">
-                        <span class="loading-icon">⚙</span>
-                        <span class="project-number">PROJETO 03</span>
-                        <h3>EM DESENVOLVIMENTO</h3>
-                        <p>Novo projeto sendo desenvolvido.</p>
-
-                        <div class="loading-bar">
-                            <span class="progress-10"></span>
-                        </div>
-
-                        <span class="loading-text">LOADING 10%</span>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-
-        <section id="habilidade" class="habilidades">
-
-            <div class="skills-header">
-                <div>
-                    <span class="section-number">03 / SKILLS</span>
-                    <h2>
-                        O que eu utilizo
-                        <br>
-                        para construir.
-                    </h2>
-                </div>
-
-                <p>
-                    Tecnologias que fazem parte da minha jornada
-                    de desenvolvimento e que utilizo nos meus
-                    projetos.
-                </p>
+          <article class="project-card">
+            <div class="project-image">
+              <img
+                src="img/miaudadee.jpg"
+                alt="Tela da Calculadora de Idade de Gato, com o formulário de anos e meses"
+                width="959"
+                height="873"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
 
-            <div class="skills-interface">
+            <div class="project-content">
+              <span class="project-number">PROJETO 02</span>
+              <h3>MIAUDADEE</h3>
+              <p>
+                Calculadora que converte a idade do gato em anos humanos. O
+                cálculo e a exibição do resultado são feitos em JavaScript, a
+                partir dos anos e meses informados.
+              </p>
 
-                <!-- MENU -->
-                <div class="skills-menu">
-                    <div class="menu-label">STACK</div>
+              <ul class="tecnologias">
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JAVASCRIPT</li>
+              </ul>
 
-                    <button class="skill-option active" data-skill="html">
-                        <span class="skill-index">01</span>
-                        <span>HTML</span>
-                        <span class="skill-arrow">→</span>
-                    </button>
-
-                    <button class="skill-option" data-skill="css">
-                        <span class="skill-index">02</span>
-                        <span>CSS</span>
-                        <span class="skill-arrow">→</span>
-                    </button>
-
-                    <button class="skill-option" data-skill="javascript">
-                        <span class="skill-index">03</span>
-                        <span>JAVASCRIPT</span>
-                        <span class="skill-arrow">→</span>
-                    </button>
-
-                    <button class="skill-option" data-skill="git">
-                        <span class="skill-index">04</span>
-                        <span>GIT / GITHUB</span>
-                        <span class="skill-arrow">→</span>
-                    </button>
-
-                    <div class="skills-menu-footer">
-                        <span class="status-dot"></span>
-                        EM CONSTANTE EVOLUÇÃO
-                    </div>
-                </div>
-
-                <!-- PAINEL -->
-                <div class="skill-display">
-                    <div class="display-top">
-                        <span>SKILL_SELECTED</span>
-                        <span id="skillNumber">01</span>
-                    </div>
-
-                    <div class="display-content">
-                        <div class="big-skill-icon" id="skillIcon">&lt;/&gt;</div>
-
-                        <span class="display-category" id="skillCategory">FRONT END</span>
-
-                        <h3 id="skillTitle">HTML</h3>
-
-                        <p id="skillDescription">
-                            Estrutura e organização de páginas
-                            web utilizando HTML5 e boas práticas
-                            de semântica.
-                        </p>
-
-                        <div class="skill-keywords" id="skillKeywords">
-                            <span>HTML5</span>
-                            <span>SEMÂNTICA</span>
-                            <span>ESTRUTURA</span>
-                        </div>
-                    </div>
-
-                    <div class="display-line"></div>
-
-                    <div class="display-bottom">
-                        <span>PAULO MICHEL</span>
-                        <span>2026</span>
-                    </div>
-                </div>
+              <div class="projeto-links">
+                <a
+                  href="https://michlogg.github.io/miaudadee/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-visualizar"
+                >
+                  Visualizar Projeto
+                </a>
+                <a
+                  href="https://github.com/MichLogg/miaudadee"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-diretorio"
+                >
+                  Diretório
+                </a>
+              </div>
             </div>
-        </section>
+          </article>
 
-        <section id="sobre" class="sobre">
-            <div class="sobre-content">
-                <div class="section-title">
-                    <span>SOBRE MIM</span>
-                    <h2>Quem sou eu?</h2>
-                </div>
+          <article class="project-card project-loading">
+            <div class="loading-content">
+              <span class="loading-icon" aria-hidden="true">⚙</span>
+              <span class="project-number">PROJETO 03</span>
+              <h3>EM DESENVOLVIMENTO</h3>
+              <p>Novo projeto sendo desenvolvido.</p>
 
-                <div class="sobre-texto">
-                    <p>
-                        Sou Paulo Michel, apaixonado por tecnologia
-                        e desenvolvimento de sistemas.
-                    </p>
+              <div
+                class="loading-bar"
+                role="progressbar"
+                aria-label="Progresso do projeto 03"
+                aria-valuenow="10"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <span class="progress-10"></span>
+              </div>
 
-                    <p>
-                        Atualmente estou focado em evoluir minhas
-                        habilidades como desenvolvedor Full Stack Web,
-                        criando projetos e colocando em prática meus
-                        conhecimentos em desenvolvimento.
-                    </p>
-
-                    <p>
-                        Meu objetivo é continuar aprendendo, evoluindo
-                        e transformar ideias em projetos reais.
-                    </p>
-                </div>
+              <span class="loading-text">LOADING 10%</span>
             </div>
-        </section>
+          </article>
+        </div>
+      </section>
 
-        <section id="contato" class="contato">
-            <div class="section-title">
-                <span>CONTATO</span>
-                <h2>Vamos conversar?</h2>
-                <p>Você pode entrar em contato comigo através dos canais abaixo.</p>
+      <section id="habilidade" class="habilidades">
+        <div class="skills-header">
+          <div>
+            <span class="section-number">03 / SKILLS</span>
+            <h2>
+              O que eu utilizo
+              <br />
+              para construir.
+            </h2>
+          </div>
+
+          <p>
+            Tecnologias que fazem parte da minha jornada de desenvolvimento e
+            que utilizo nos meus projetos.
+          </p>
+        </div>
+
+        <div class="skills-interface">
+          <!-- MENU -->
+          <div class="skills-menu">
+            <div class="menu-label">STACK</div>
+
+            <button
+              class="skill-option active"
+              data-skill="html"
+              aria-pressed="true"
+              aria-controls="skillPainel"
+            >
+              <span class="skill-index">01</span>
+              <span>HTML</span>
+              <span class="skill-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <button
+              class="skill-option"
+              data-skill="css"
+              aria-pressed="false"
+              aria-controls="skillPainel"
+            >
+              <span class="skill-index">02</span>
+              <span>CSS</span>
+              <span class="skill-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <button
+              class="skill-option"
+              data-skill="javascript"
+              aria-pressed="false"
+              aria-controls="skillPainel"
+            >
+              <span class="skill-index">03</span>
+              <span>JAVASCRIPT</span>
+              <span class="skill-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <button
+              class="skill-option"
+              data-skill="git"
+              aria-pressed="false"
+              aria-controls="skillPainel"
+            >
+              <span class="skill-index">04</span>
+              <span>GIT / GITHUB</span>
+              <span class="skill-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <div class="skills-menu-footer">
+              <span class="status-dot" aria-hidden="true"></span>
+              EM CONSTANTE EVOLUÇÃO
+            </div>
+          </div>
+
+          <!-- PAINEL -->
+          <div class="skill-display">
+            <div class="display-top">
+              <span>SKILL_SELECTED</span>
+              <span id="skillNumber">01</span>
             </div>
 
-            <div class="contato-links">
-                <a href="https://github.com/MichLogg" target="_blank">GitHub</a>
-                <a href="mailto:paulomichel2006@gmail.com">E-mail</a>
-                <a href="https://wa.me/5585981977830" target="_blank">WhatsApp</a>
-            </div>
-        </section>
+            <div class="display-content" id="skillPainel" aria-live="polite">
+              <div class="big-skill-icon" id="skillIcon" aria-hidden="true">
+                &lt;/&gt;
+              </div>
 
+              <span class="display-category" id="skillCategory">FRONT END</span>
+
+              <h3 id="skillTitle">HTML</h3>
+
+              <p id="skillDescription">
+                Estrutura e organização de páginas web utilizando HTML5 e boas
+                práticas de semântica.
+              </p>
+
+              <div class="skill-keywords" id="skillKeywords">
+                <span>HTML5</span>
+                <span>SEMÂNTICA</span>
+                <span>ESTRUTURA</span>
+              </div>
+            </div>
+
+            <div class="display-line"></div>
+
+            <div class="display-bottom">
+              <span>PAULO MICHEL</span>
+              <span data-ano>2026</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sobre" class="sobre">
+        <div class="sobre-content">
+          <div class="section-title">
+            <span>SOBRE MIM</span>
+            <h2>Quem sou eu?</h2>
+          </div>
+
+          <div class="sobre-texto">
+            <p>
+              Sou Paulo Michel, apaixonado por tecnologia e desenvolvimento de
+              sistemas.
+            </p>
+
+            <p>
+              Atualmente estou focado em evoluir minhas habilidades como
+              desenvolvedor Full Stack Web, criando projetos e colocando em
+              prática meus conhecimentos em desenvolvimento.
+            </p>
+
+            <p>
+              Meu objetivo é continuar aprendendo, evoluindo e transformar
+              ideias em projetos reais.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contato" class="contato">
+        <div class="section-title">
+          <span>CONTATO</span>
+          <h2>Vamos conversar?</h2>
+          <p>Você pode entrar em contato comigo através dos canais abaixo.</p>
+        </div>
+
+        <div class="contato-links">
+          <a
+            href="https://github.com/MichLogg"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          <a href="mailto:paulomichel2006@gmail.com">E-mail</a>
+          <a
+            href="https://wa.me/5585981977830"
+            target="_blank"
+            rel="noopener noreferrer"
+            >WhatsApp</a
+          >
+        </div>
+      </section>
     </main>
 
     <footer>
-        <p>© 2026 Paulo Michel</p>
-        <span>Desenvolvido com HTML, CSS e JavaScript</span>
+      <p>© <span data-ano>2026</span> Paulo Michel</p>
+      <span>Desenvolvido com HTML, CSS e JavaScript</span>
     </footer>
-
-</body>
+  </body>
 </html>
