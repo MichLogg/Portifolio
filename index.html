@@ -13,8 +13,6 @@
     <meta name="theme-color" content="#080B14" />
     <meta name="color-scheme" content="dark" />
 
-    <!-- Redes sociais. Preencha og:url e og:image com a URL absoluta
-         do site publicado para o preview funcionar ao compartilhar. -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:title" content="Portfólio | Paulo Michel" />
@@ -105,7 +103,7 @@
           </p>
         </div>
 
-        <div class="cards-projetos">
+        <div class="cards-projetos destaque">
           <article class="project-card">
             <div class="project-image">
               <img
@@ -200,27 +198,60 @@
             </div>
           </article>
 
-          <article class="project-card project-loading">
-            <div class="loading-content">
-              <span class="loading-icon" aria-hidden="true">⚙</span>
+          <article class="project-card">
+            <div class="project-image">
+              <img
+                src="img/aprendascript.jpg"
+                alt="Tela inicial do jogo AprendaScript, em pixel art"
+                width="618"
+                height="560"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
+            <div class="project-content">
               <span class="project-number">PROJETO 03</span>
-              <h3>EM DESENVOLVIMENTO</h3>
-              <p>Novo projeto sendo desenvolvido.</p>
+              <h3>APRENDASCRIPT</h3>
+              <p>
+                Jogo em pixel art para aprender JavaScript, com 4 níveis, 3
+                modos e 172 desafios. A lógica do quiz, o estado da partida e o
+                áudio são construídos em JavaScript puro.
+              </p>
 
-              <div
-                class="loading-bar"
-                role="progressbar"
-                aria-label="Progresso do projeto 03"
-                aria-valuenow="10"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                <span class="progress-10"></span>
+              <ul class="tecnologias">
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JAVASCRIPT</li>
+              </ul>
+
+              <div class="projeto-links">
+                <a
+                  href="https://michlogg.github.io/APRENDASCRIPT/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-visualizar"
+                >
+                  Visualizar Projeto
+                </a>
+                <a
+                  href="https://github.com/MichLogg/APRENDASCRIPT"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-diretorio"
+                >
+                  Diretório
+                </a>
               </div>
-
-              <span class="loading-text">LOADING 10%</span>
             </div>
           </article>
+        </div>
+
+        <div class="ver-todos">
+          <a href="projetos.html" class="btn-ver-todos">
+            Ver todos os projetos
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </section>
 
@@ -242,7 +273,6 @@
         </div>
 
         <div class="skills-interface">
-          <!-- MENU -->
           <div class="skills-menu">
             <div class="menu-label">STACK</div>
 
@@ -296,7 +326,6 @@
             </div>
           </div>
 
-          <!-- PAINEL -->
           <div class="skill-display">
             <div class="display-top">
               <span>SKILL_SELECTED</span>

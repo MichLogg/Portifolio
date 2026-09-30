@@ -1,26 +1,12 @@
-/* ==========================================================================
-   Portfólio - Paulo Michel
-   ========================================================================== */
-
 const preferenciaReduzida = window.matchMedia(
   "(prefers-reduced-motion: reduce)",
 );
-
-/* ==========================================================================
-   Ano atual no rodapé
-   ========================================================================== */
 
 const anoAtual = new Date().getFullYear();
 
 document.querySelectorAll("[data-ano]").forEach((elemento) => {
   elemento.textContent = anoAtual;
 });
-
-/* ==========================================================================
-   Efeito de digitação do título
-   O texto completo continua no HTML (para leitores de tela e buscadores)
-   e a animação acontece em uma cópia decorativa.
-   ========================================================================== */
 
 const titulo = document.querySelector(".homeinfo h1");
 
@@ -34,8 +20,6 @@ if (titulo) {
   const textoVisivel = document.createElement("span");
   textoVisivel.setAttribute("aria-hidden", "true");
 
-  // reserva a altura real do título antes de esvaziá-lo, senão o bloco
-  // colapsa e o resto da página salta quando a digitação começa
   const alturaReservada = titulo.getBoundingClientRect().height;
 
   titulo.style.minHeight = `${alturaReservada}px`;
@@ -57,7 +41,6 @@ if (titulo) {
         return;
       }
 
-      // terminou: devolve o controle da altura ao CSS
       titulo.style.minHeight = "";
     };
 
@@ -65,12 +48,8 @@ if (titulo) {
   }
 }
 
-/* ==========================================================================
-   Animação de entrada das seções
-   ========================================================================== */
-
 const elementosAnimados = document.querySelectorAll(
-  ".homeinfo, .home-image, .section-title, .skills-header, .skills-interface, .project-card, .sobre-content, .contato-links",
+  ".homeinfo, .home-image, .section-title, .skills-header, .skills-interface, .project-card, .ver-todos, .sobre-content, .contato-links",
 );
 
 const observador = new IntersectionObserver(
@@ -79,7 +58,6 @@ const observador = new IntersectionObserver(
       if (elemento.isIntersecting) {
         elemento.target.classList.add("mostrar");
 
-        // a animação é de mão única: depois de exibir, para de observar
         instancia.unobserve(elemento.target);
       }
     });
@@ -94,20 +72,17 @@ elementosAnimados.forEach((elemento) => {
   observador.observe(elemento);
 });
 
-/* ==========================================================================
-   Destaque do item de menu da seção visível
-   ========================================================================== */
-
 const cabecalho = document.querySelector("header");
 const secoes = document.querySelectorAll("section");
-const linksMenu = document.querySelectorAll("nav a");
+const linksMenu = [...document.querySelectorAll("nav a")].filter((link) =>
+  link.getAttribute("href").startsWith("#"),
+);
 
 let atualizacaoAgendada = false;
 
 function atualizarMenu() {
   atualizacaoAgendada = false;
 
-  // o header muda de altura no mobile, então o recuo é medido, não fixo
   const recuo = (cabecalho ? cabecalho.offsetHeight : 77) + 110;
 
   let secaoAtual = "";
@@ -118,8 +93,6 @@ function atualizarMenu() {
     }
   });
 
-  // no fim da página a última seção pode nunca alcançar o recuo (ela é mais
-  // curta que o espaço restante), então o fim do scroll a marca como atual
   const fimDoScroll =
     document.documentElement.scrollHeight - window.innerHeight - 2;
 
@@ -152,10 +125,6 @@ window.addEventListener("resize", agendarAtualizacaoDoMenu);
 
 atualizarMenu();
 
-/* ==========================================================================
-   Fundo de estrelas
-   ========================================================================== */
-
 const estrelas = document.querySelector("#stars");
 
 if (estrelas && !preferenciaReduzida.matches) {
@@ -178,7 +147,6 @@ if (estrelas && !preferenciaReduzida.matches) {
   estrelas.appendChild(fragmento);
 
   const criarEstrelaCadente = () => {
-    // não desenha nada enquanto a aba está em segundo plano
     if (document.hidden) {
       return;
     }
@@ -193,8 +161,6 @@ if (estrelas && !preferenciaReduzida.matches) {
 
     estrelas.appendChild(estrela);
 
-    // a remoção acompanha a duração sorteada; o valor fixo de antes cortava
-    // as animações mais longas e deixava as curtas reiniciarem
     setTimeout(() => {
       estrela.remove();
     }, duracao * 1000);
@@ -202,10 +168,6 @@ if (estrelas && !preferenciaReduzida.matches) {
 
   setInterval(criarEstrelaCadente, 2500);
 }
-
-/* ==========================================================================
-   Painel de habilidades
-   ========================================================================== */
 
 const skillData = {
   html: {
@@ -258,7 +220,6 @@ const skillDescription = document.querySelector("#skillDescription");
 const skillNumber = document.querySelector("#skillNumber");
 const skillKeywords = document.querySelector("#skillKeywords");
 
-// precisa acompanhar a duração de .display-content em style.css
 const DURACAO_TROCA = 250;
 
 let trocaAgendada = null;
@@ -304,12 +265,6 @@ function selecionarSkill(option) {
     return;
   }
 
-  // a transição mora no CSS (.display-content.saindo); daqui só definimos
-  // o sentido do deslize e alternamos a classe.
-  //
-  // O agendamento é por timer, e não por "transitionend": em aba oculta ou
-  // sem layout a transição não roda, o evento nunca chega e o painel ficaria
-  // preso no conteúdo antigo.
   clearTimeout(trocaAgendada);
 
   displayContent.style.setProperty("--deslocamento", `${direcao * 40}px`);
@@ -318,9 +273,6 @@ function selecionarSkill(option) {
   trocaAgendada = setTimeout(() => {
     preencherPainel(dados);
 
-    // reposiciona no lado oposto SEM animar (a transição é desligada e o
-    // reflow forçado aplica a nova posição de imediato); só depois disso
-    // o painel volta deslizando para o centro.
     displayContent.style.transition = "none";
     displayContent.style.setProperty("--deslocamento", `${direcao * -40}px`);
     void displayContent.offsetWidth;
@@ -335,7 +287,6 @@ skillOptions.forEach((option, indice) => {
     selecionarSkill(option);
   });
 
-  // navegação por teclado entre as opções
   option.addEventListener("keydown", (evento) => {
     let alvo = null;
 
@@ -354,10 +305,6 @@ skillOptions.forEach((option, indice) => {
   });
 });
 
-/* ==========================================================================
-   Inclinação 3D dos cards de projeto
-   ========================================================================== */
-
 const suportaHover = window.matchMedia("(hover: hover) and (pointer: fine)");
 
 if (suportaHover.matches && !preferenciaReduzida.matches) {
@@ -369,7 +316,6 @@ if (suportaHover.matches && !preferenciaReduzida.matches) {
     let quadroAgendado = false;
 
     card.addEventListener("mouseenter", () => {
-      // sem transition durante o movimento, senão o card persegue o cursor
       card.classList.add("inclinando");
     });
 
